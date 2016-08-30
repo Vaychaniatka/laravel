@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -8,9 +9,20 @@
 | This file is where you may define all of the routes that are handled
 | by your application. Just tell Laravel the URIs it should respond
 | to using a Closure or controller method. Build something great!
-|
-*/
+|*/
 
-Route::get('/', function () {
+
+/*Route::get('/', function () {
     return view('welcome');
+});*/
+Route::get('/','PostController@index');
+Route::get('/add', function ()
+{
+    return view('post.add');
 });
+
+$router->resource('post','PostController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

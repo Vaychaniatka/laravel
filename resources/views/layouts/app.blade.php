@@ -33,7 +33,11 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>{!!  link_to_action('PostController@index','Index')!!}</li>
-                <li>{!!  link_to_route('post.create','Add Post')!!}</li>
+                <li>{!!  link_to_action('PostController@create','Add Post')!!}</li>
+                @can('admin')
+                    <li>{!!  link_to_action('PostController@getUnpublished','Unpublished')!!}</li>
+                    <li>{!!  link_to_action('PostController@viewAll','View All')!!}</li>
+                @endcan
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">

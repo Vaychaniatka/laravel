@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use DB;
@@ -10,13 +11,15 @@ use App\Http\Requests;
 
 class PostController extends Controller
 {
+
     public function index(Post $postModel)
     {
 
         $posts = $postModel->getPublishedPosts();
-        //$posts=$query->paginate(4);
         return view('post.index', ['posts'=>$posts]);
     }
+
+
 
     public function publishedPosts(Post $postModel)
     {
@@ -26,26 +29,37 @@ class PostController extends Controller
 
     }
 
-    public function unpublishedPosts(Post $postModel)
+    public function getUnpublished(Post $postModel)
     {
         $posts = $postModel->getUnpublishedPosts();
-        return $posts;
+        return view('post.index', ['posts'=>$posts]);
+
+
+    }
+
+    public function viewAll(Post $postModel)
+    {
+        $posts = $postModel->getAll();
+        return view('post.index', ['posts'=>$posts]);
 
     }
 
     public function show($id, Post $postModel)
     {
-        //dd($id);
+
         $posts =  $postModel->where('id',$id)->first();
-        //dd($posts);
         return view('post.view', ['posts'=>$posts]);
+
 
 
     }
 
-    public function edit($id)
+    public function edit($id, Post $postModel)
     {
-        echo 'Hello';
+        $this->authorize('admin', \Auth::user());
+
+        $posts = $postModel->where('id',$id)->first();
+        return view('post.edit', ['posts'=>$posts]);
 
     }
 
@@ -64,6 +78,28 @@ class PostController extends Controller
     {
         return view('post.add');
 
+    }
+
+    public function update(Post $postModel, Request $request)
+    {
+        $this->authorize('admin', \Auth::user());
+
+
+        $new_data=$request->all();
+        //$id = $new_data->id;
+        //$post = $postModel->find($id);
+        //$post->fill($new_data)->save();
+        //$request->input('title');
+        /*$postModel->title=$request->input('title');
+        $postModel->save();*/
+        //$input=$request->all();
+
+
+    }
+
+    public function test($test_unit)
+    {
+        return view ('post.test', ['input'=>$test_unit]);
     }
 
 

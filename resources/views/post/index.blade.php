@@ -12,7 +12,11 @@
         <div class="panel-body">
             {!! $post->excerpt !!}
             <br>
-            Published:{!! $post->published_at !!}
+            @if(isset($post->published_at))
+                Published:{!! $post->published_at !!}
+            @else
+                Unpublished
+            @endif
         </div>
     </div>
         @endforeach

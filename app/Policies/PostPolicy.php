@@ -2,7 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
+use App\Models\Post;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
@@ -19,29 +20,29 @@ class PostPolicy
         //
     }
 
-    public function update(User $user, Post $post)
+    public function update(User $user)
     {
         return $user->admin;
     }
 
-    public function delete(User $user, Post $post)
+    public function delete(User $user)
     {
-        return $user->admin === true;
+        return $user->admin;
     }
 
-    public function publish(User $user, Post $post)
+    public function publish(User $user)
     {
-        return $user->admin===true;
+        return $user->admin;
     }
 
-    public function viewUnpublished(User $user, Post $post)
+    public function viewUnpublished(User $user)
     {
-        return $user->admin===true;
+        return $user->admin;
     }
 
-    public function viewAll(User $user, Post $post)
+    public function viewAll(User $user)
     {
-        return $user->admin===true;
+        return $user->admin;
     }
 
 

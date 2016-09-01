@@ -6,6 +6,7 @@
         <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
+                @if($post->viewed!=true){!! '<b>Unviewed!</b>' !!}@endif
                 {!! link_to_action('PostController@show',$post->title,['id'=>$post->id]) !!}
             </h3>
         </div>

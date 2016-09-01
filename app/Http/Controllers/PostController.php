@@ -46,8 +46,18 @@ class PostController extends Controller
 
     public function show($id, Post $postModel)
     {
+        $user=\Auth::user();
+        $posts=$postModel->find($id);
+        if($this->authorize('admin',$user))
+        {
+            $data['viewed']=true;
+            $posts->fill($data)->save();
+            //return view('post.view', ['posts'=>$posts]);
+        }
 
-        $posts =  $postModel->where('id',$id)->first();
+
+        //$posts =  $postModel->where('id',$id)->first();
+        //$posts = $postModel->find($id);
         return view('post.view', ['posts'=>$posts]);
 
 
@@ -69,9 +79,12 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-    public function delete($id)
+    public function delete(Post $postModel, $id)
     {
+        $this->authorize('admin', \Auth::user());
 
+        $postModel->where('id',$id)->delete();
+        return redirect('/post');
     }
 
     public function create()
@@ -86,20 +99,32 @@ class PostController extends Controller
 
 
         $new_data=$request->all();
-        //$id = $new_data->id;
-        //$post = $postModel->find($id);
-        //$post->fill($new_data)->save();
-        //$request->input('title');
-        /*$postModel->title=$request->input('title');
-        $postModel->save();*/
-        //$input=$request->all();
-
+        $id = $new_data['id'];
+        $post = $postModel->find($id);
+        $post->fill($new_data)->save();
+        return redirect('/post');
 
     }
 
-    public function test($test_unit)
+    public function publishing($id, Post $postModel)
     {
-        return view ('post.test', ['input'=>$test_unit]);
+        $post=$postModel->find($id);
+        $state=$post->published;
+        if ($state)
+       {
+           $data['published']=false;
+           $post->fill($data)->save();
+       }else
+        {
+            $data['published']=true;
+            $post->fill($data)->save();
+        }
+        return redirect('/post');
+    }
+
+    public function setViewed()
+    {
+
     }
 
 

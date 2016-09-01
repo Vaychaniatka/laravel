@@ -28,6 +28,14 @@
     </div>
     <br>
     <br>
+
     {!! Form::submit('Save',['class'=>'btn btn-default']) !!}
     {!! Form::close() !!}
+    {!! link_to(URL::previous(), 'Go Back', ['class' => 'btn btn-default']) !!}
+    @if($posts->published)
+
+    {!! link_to_action('PostController@publishing','Unpublish',$posts->id,['class' =>'btn btn-default']) !!}
+    @else
+    {!! link_to_action('PostController@publishing','Publish',$posts->id,['class' =>'btn btn-default']) !!}
+    @endif
 @endsection

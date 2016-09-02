@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use DB;
+use Carbon\Carbon;
 
 use App\Http\Requests;
 
@@ -46,14 +47,14 @@ class PostController extends Controller
 
     public function show($id, Post $postModel)
     {
-        $user=\Auth::user();
+        //$user=\Auth::user();
         $posts=$postModel->find($id);
-        if($this->authorize('admin',$user))
-        {
+        //if($this->authorize('admin',$user))
+       //{
             $data['viewed']=true;
             $posts->fill($data)->save();
             //return view('post.view', ['posts'=>$posts]);
-        }
+       // }
 
 
         //$posts =  $postModel->where('id',$id)->first();
@@ -113,10 +114,12 @@ class PostController extends Controller
         if ($state)
        {
            $data['published']=false;
+           $data['published_at']=NULL;
            $post->fill($data)->save();
        }else
         {
             $data['published']=true;
+            $data['published_at']=Carbon::now();
             $post->fill($data)->save();
         }
         return redirect('/post');
